@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ username }}'s Tasks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        h1, h2 {
+            color: #007bff;
+            margin-top: 20px;
+        }
+
+        .alert {
+            padding: 10px;
+            margin: 10px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        table {
+            width: 80%;
+            max-width: 900px;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f1f1f1;
+        }
+
+        tr:hover td {
+            background-color: #e9ecef;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .circle-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            line-height: 30px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 6px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .edit-btn:hover, .delete-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .analytics-btn {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        .analytics-btn:hover {
+            background-color: #218838;
+        }
+
+        .create-task-form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .create-btn {
+            display: block;
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .create-btn:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                width: 95%;
+            }
+
+            .alert {
+                width: 95%;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .create-task-form {
+                width: 95%;
+            }
+
+            input, textarea, select {
+                font-size: 0.9rem;
+            }
+
+            .create-btn {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+{% if message is defined and message %}
+    <div class="alert">{{ message }}</div>
+{% endif %}
+<h1>Welcome, {{ username }}!</h1>
+<a href="/analysis" class="analytics-btn">Analytics</a>
+<a href="{{ url_for('logout') }}" class="btn">Logout</a>
+
+<h2>New Task</h2>
+<form method="POST" class="create-task-form">
+    <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" placeholder="Enter task title" required>
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="3" placeholder="Enter task description" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="task_type">Task Type:</label>
+        <select id="task_type" name="task_type" required>
+            <option value="" disabled selected>Select task type</option>
+            {% for type in task_types %}
+            <option value="{{ type['type'] }}">{{ type['type'] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="deadline">Deadline:</label>
+        <input type="datetime-local" id="deadline" name="deadline" required>
+    </div>
+
+    <button type="submit" name="create_task" class="create-btn">Create</button>
+</form>
+
+<h2>To-Do Tasks</h2>
+{% if todoTasks %}
+    <table>
+        <thead>
+        <tr>
+            <th>Complete</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Task Type</th>
+            <th>Status</th>
+            <th>Deadline</th>
+            <th>Creation Time</th>
+            <th>Completion Time</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for task in todoTasks %}
+            <tr>
+                <td>
+                    <form method="POST" style="display:inline;">
+                        <button type="submit" name="complete_task" class="circle-button">&#10004;</button>
+                        <input type="hidden" name="task_id" value="{{ task['id'] }}">
+                    </form>
+                </td>
+                <td>{{ task['title'] }}</td>
+                <td>{{ task['description'] }}</td>
+                <td>{{ task['task_type'] }}</td>
+                <td>{{ task['status'] }}</td>
+                <td>{{ task['deadline'] }}</td>
+                <td>{{ task['creation_time'] }}</td>
+                <td>{{ task['completion_time'] if task['completion_time'] else 'Active' }}</td>
+                <td>
+                    <div class="button-group">
+                        <form method="POST" style="display:inline;">
+                            <button type="submit" name="edit_task" class="edit-btn">Edit</button>
+                            <input type="hidden" name="task_id" value="{{ task['id'] }}">
+                        </form>
+                        <form method="POST" style="display:inline;">
+                            <button type="submit" name="delete_task" class="delete-btn">Delete</button>
+                            <input type="hidden" name="task_id" value="{{ task['id'] }}">
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No current active task.</p>
+{% endif %}
+
+<h2>Completed Tasks</h2>
+{% if doneTasks %}
+    <table>
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Task Type</th>
+            <th>Status</th>
+            <th>Deadline</th>
+            <th>Creation Time</th>
+            <th>Completion Time</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for task in doneTasks %}
+            <tr>
+                <td>{{ task['title'] }}</td>
+                <td>{{ task['description'] }}</td>
+                <td>{{ task['task_type'] }}</td>
+                <td>{{ task['status'] }}</td>
+                <td>{{ task['deadline'] }}</td>
+                <td>{{ task['creation_time'] }}</td>
+                <td>{{ task['completion_time'] if task['completion_time'] else 'Not Completed' }}</td>
+                <td>
+                    <form method="POST" style="display:inline;">
+                        <button type="submit" name="delete_task" class="delete-btn">Delete</button>
+                        <input type="hidden" name="task_id" value="{{ task['id'] }}">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No completed tasks.</p>
+{% endif %}
+
+</body>
+</html>

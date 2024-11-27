@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics | {{ username }}</title>
+    <style>
+        /* Reset and Body Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background: linear-gradient(115deg, #1d3557, #457b9d);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 40px 20px;  /* Added top padding */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        /* Container Styling */
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            padding: 40px;
+            width: 90%;
+            max-width: 1200px; /* Increased max-width */
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 30px; /* Added bottom margin */
+        }
+
+        /* Floating Decorative Shapes */
+        .container::before,
+        .container::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            z-index: -1;
+            animation: float 6s ease-in-out infinite;
+        }
+        .container::before {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #fca311, #e63946);
+            top: -50px;
+            right: -50px;
+            opacity: 0.6;
+        }
+        .container::after {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #a8dadc, #1d3557);
+            bottom: -60px;
+            left: -60px;
+            opacity: 0.5;
+        }
+
+        /* Header */
+        h1 {
+            font-size: 2.5rem; /* Increased font size */
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #fca311;
+        }
+
+        /* Button Container */
+        .button-container {
+            margin: 30px 0; /* Increased margin */
+            text-align: center;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #06d6a0, #118ab2);
+            color: #fff;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin: 0 15px;
+            text-transform: uppercase;
+            box-shadow: 0 6px 12px rgba(6, 214, 160, 0.4);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #118ab2, #06d6a0);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(6, 214, 160, 0.5);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 6px 12px rgba(6, 214, 160, 0.4);
+        }
+
+h2 {
+    color: #fca311;
+    font-size: 1.75rem; /* Adjusted font size for headings */
+    margin-bottom: 15px; /* Added margin to create space between heading and table */
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 40px; /* Added bottom margin to create space between tables */
+    border-collapse: collapse;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+        th, td {
+            padding: 14px;  /* Increased padding */
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f1f1f1;
+        }
+
+        tr:hover td {
+            background-color: #e9ecef;
+        }
+
+        /* Alert Styling */
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: rgba(252, 163, 17, 0.25);
+            color: #fca311;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1rem; /* Adjusted font size */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            table {
+                width: 100%;
+                margin: 0;
+            }
+
+            .btn {
+                font-size: 1rem;
+                padding: 12px 18px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .button-container {
+                margin: 20px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Analytics for {{ username }}</h1>
+
+    <div class="button-container">
+        <a href="{{ url_for('tasks') }}" class="btn">Tasks</a>
+        <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+    </div>
+
+    {% if message is defined and message %}
+        <div class="alert">{{ message }}</div>
+    {% endif %}
+
+    <h2 style="color: #fca311;">All Tasks</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>Task Type</th>
+                <th>Title</th>
+                <th>Deadline</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in allTasks1 %}
+            <tr>
+                <td>{{ task.status }}</td>
+                <td>{{ task.task_type }}</td>
+                <td>{{ task.title }}</td>
+                <td>{{ task.deadline }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4">No tasks</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 style="color: #fca311;">Completed Tasks</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Completion Time</th>
+                <th>Time Spent in Days (0 means under 24 hours)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in completedTasks2 %}
+            <tr>
+                <td>{{ task.title }}</td>
+                <td>{{ task.completion_time }}</td>
+                <td>{{ task.time_spent }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3">No completed tasks</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 style="color: #fca311;">Uncompleted Tasks</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Task Type</th>
+                <th>Deadline</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in uncompletedTasks3 %}
+            <tr>
+                <td>{{ task.title }}</td>
+                <td>{{ task.task_type }}</td>
+                <td>{{ task.deadline }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3">No uncompleted tasks</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 style="color: #fca311;">Late Completed Tasks</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Latency (Days)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in latencyTasks4 %}
+            <tr>
+                <td>{{ task.title }}</td>
+                <td>{{ task.latency }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="2">No late tasks</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 style="color: #fca311;">Categorization of Completed Tasks</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Task Type</th>
+                <th>Completed Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task_count in numberOfTaskType5 %}
+            <tr>
+                <td>{{ task_count.task_type }}</td>
+                <td>{{ task_count.cnt }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="2">No categorized tasks</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 style="color: #fca311;">Categorization of All Tasks</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Task Type</th>
+                <th>All Tasks Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task_count in numberOfTaskType6 %}
+            <tr>
+                <td>{{ task_count.task_type }}</td>
+                <td>{{ task_count.cnt }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="2">No categorized tasks</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
