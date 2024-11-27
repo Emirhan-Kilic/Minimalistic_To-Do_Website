@@ -28,6 +28,7 @@
 
 ---
 
+
 ## 🚀 Technology Stack
 
 - **Backend**: Flask (Python Web Framework)
@@ -60,3 +61,4 @@ If you have any questions or feedback, feel free to reach out via the GitHub iss
 ---
 
 This version is designed to be more visually engaging, with clear sectioning for ease of navigation, and it emphasizes both the app's features and potential use cases. Let me know if you need any further adjustments!
+![Ekran görüntüsü 2024-11-27 130527](https://github.com/user-attachments/assets/0e2357da-6cea-41cd-ae6c-6b1d27efffca)
