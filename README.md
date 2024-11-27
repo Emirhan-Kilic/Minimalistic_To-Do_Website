@@ -49,7 +49,7 @@ We welcome contributions from the community! If you’d like to help improve the
 
 ## 📜 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+This project is licensed under the MIT License.
 
 ---
 
